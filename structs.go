@@ -59,13 +59,14 @@ type APITradeResponse struct {
 
 // APIPairsResponse - ..
 type APIPairsResponse struct {
-	Success bool `json:"success"`
-	//Result
+	Success bool                 `json:"success"`
+	Result  []PairsDataContainer `json:"pairs"`
 }
 
 // PairsDataContainer - ..
 type PairsDataContainer struct {
-	Pairs []PairData `json:"pairs"`
+	Pair       PairData            `json:"pairs"`
+	MarketData MarketDataContainer `json:"data_market"`
 }
 
 // PairData - ..
@@ -81,6 +82,19 @@ type PairData struct {
 	MinAmount       float64 `json:"min_amount"`        // 1
 	MinPrice        float64 `json:"min_price"`         // 0.001
 	MaxPrice        float64 `json:"max_price"`         // 100
+}
+
+// MarketDataContainer - ..
+type MarketDataContainer struct {
+	Open      float64 `json:"open"`       // example: 0.1744
+	Close     float64 `json:"close"`      // example: 0.1752
+	High      float64 `json:"high"`       // example: 0.1766
+	Low       float64 `json:"low"`        // example: 0.1553
+	Volume    float64 `json:"volume"`     // example: 67044.815
+	VolumeUSD float64 `json:"volume_usd"` // example: 1174.6252
+	Value     float64 `json:"value"`      // example: 11346.6402207
+	Rate      float64 `json:"rate"`       // example: 0.46
+	DateNow   int64   `json:"date_now"`   // example: 1634566376377
 }
 
 // CurrencyData - ..
