@@ -217,3 +217,25 @@ type OrdersHistoryPairData struct {
 	BaseTicker  string `json:"cur"`
 	QuoteTicker string `json:"ecur"`
 }
+
+// APITradeHistoryResponse - ..
+type APITradeHistoryResponse struct {
+	Success bool                      `json:"success"`
+	Result  TradeHistoryDataContainer `json:"result"`
+}
+
+// TradeHistoryDataContainer - ..
+type TradeHistoryDataContainer struct {
+	Items []TradeHistoryData    `json:"items"`
+	Pair  OrdersHistoryPairData `json:"pair"`
+}
+
+// TradeHistoryData - ..
+type TradeHistoryData struct {
+	RecordID   string  `json:"record_id"`   // UUID format, example: f914ea5d-32ae-4eac-a5e0-e94d55f7b4a7
+	RecordType string  `json:"record_type"` // example: buy
+	Price      float64 `json:"price"`       // example: 0.1752
+	Amount     float64 `json:"amount"`      // example: 1
+	Value      float64 `json:"value"`       // 0.1752
+	CreatedAt  int64   `json:"created_at"`  // date, example: 1634566302532
+}
