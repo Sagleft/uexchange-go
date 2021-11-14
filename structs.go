@@ -198,3 +198,22 @@ type PaginationData struct {
 	Page  int `json:"page"`
 	Limit int `json:"limit"`
 }
+
+// APIOrdersHistoryResponse - ..
+type APIOrdersHistoryResponse struct {
+	Success bool                       `json:"success"`
+	Result  OrdersHistoryDataContainer `json:"result"`
+}
+
+// OrdersHistoryDataContainer - ..
+type OrdersHistoryDataContainer struct {
+	Order   OrderData             `json:"order"`
+	History []OrderData           `json:"history"`
+	Pair    OrdersHistoryPairData `json:"pair"`
+}
+
+// OrdersHistoryPairData - ..
+type OrdersHistoryPairData struct {
+	BaseTicker  string `json:"cur"`
+	QuoteTicker string `json:"ecur"`
+}
