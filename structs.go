@@ -57,6 +57,32 @@ type APITradeResponse struct {
 	DaemonID int64 `json:"daemon_id"`
 }
 
+// APIPairsResponse - ..
+type APIPairsResponse struct {
+	Success bool `json:"success"`
+	//Result
+}
+
+// PairsDataContainer - ..
+type PairsDataContainer struct {
+	Pairs []PairData `json:"pairs"`
+}
+
+// PairData - ..
+type PairData struct {
+	ID              int     `json:"pair_id"`           // example: 25
+	PairCode        string  `json:"pair"`              // example: crp_usdt
+	PairTitle       string  `json:"pair_show"`         // example: CRP / USDT
+	CoinsGroup      string  `json:"group"`             // example: crp
+	Visible         bool    `json:"visible"`           // example: true
+	Enabled         bool    `json:"enable"`            // example: true
+	RoundDealAmount int     `json:"round_deal_amount"` // example: 3
+	RoundDealPrice  int     `json:"round_deal_price"`  // example: 4
+	MinAmount       float64 `json:"min_amount"`        // 1
+	MinPrice        float64 `json:"min_price"`         // 0.001
+	MaxPrice        float64 `json:"max_price"`         // 100
+}
+
 // CurrencyData - ..
 type CurrencyData struct {
 	ID            string  `json:"id"`
