@@ -160,3 +160,41 @@ type APICurrenciesListResponse struct {
 
 // CurrenciesListData - ..
 type CurrenciesListData map[string]CurrencyData
+
+// APIOrdersResponse - response from get orders list
+type APIOrdersResponse struct {
+	Success bool                `json:"success"`
+	Result  OrdersDataContainer `json:"result"`
+}
+
+// OrdersDataContainer - orders response data
+type OrdersDataContainer struct {
+	AllOrders     []OrderData    `json:"allorders"`
+	Pagination    PaginationData `json:"paginator"`
+	Filters       []string       `json:"filters"`
+	MyOrdersCount int            `json:"my_order_count"`
+}
+
+// OrderData - ..
+type OrderData struct {
+	OrderID               int64   `json:"order_id"`       // example: 3747944
+	Amount                float64 `json:"amount"`         // example: 1
+	Price                 float64 `json:"price"`          // example: 3
+	Value                 float64 `json:"value"`          // example: 3
+	OriginalValue         float64 `json:"orig_value"`     // example: 3
+	OriginalAmount        float64 `json:"orig_amount"`    // example: 1
+	OrderRegistrationDate int64   `json:"date_reg"`       // example: 1527883807109
+	TaskType              string  `json:"task"`           // example: sell
+	Status                string  `json:"status"`         // example: open
+	BaseTicker            string  `json:"cur"`            // example: crp
+	QuoteTicker           string  `json:"ecur"`           // example: usdt
+	ExecutedPrice         float64 `json:"price_executed"` // example: 0
+	ExecutedValue         float64 `json:"value_executed"` // example: 0
+}
+
+// PaginationData - ..
+type PaginationData struct {
+	Count int `json:"count"`
+	Page  int `json:"page"`
+	Limit int `json:"limit"`
+}
