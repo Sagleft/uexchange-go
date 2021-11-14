@@ -39,14 +39,22 @@ type APIBalanceResponse struct {
 // BalanceResponse - ..
 type BalanceResponse struct {
 	AllBalance []BalanceData `json:"allbalance"`
+	UserID     string        `json:"user_id"`
 }
 
 // BalanceData - ..
 type BalanceData struct {
 	ID       string       `json:"id"`
 	Currency CurrencyData `json:"currency"`
-	Reserve float64 `json:"reserve"`
-	Balance float64 `json:"balance"`
+	Reserve  float64      `json:"reserve"`
+	Balance  float64      `json:"balance"`
+}
+
+// APITradeResponse - ..
+type APITradeResponse struct {
+	Success  bool  `json:"success"`
+	OrderID  int64 `json:"order_id"`
+	DaemonID int64 `json:"daemon_id"`
 }
 
 // CurrencyData - ..
