@@ -239,3 +239,14 @@ type TradeHistoryData struct {
 	Value      float64 `json:"value"`       // 0.1752
 	CreatedAt  int64   `json:"created_at"`  // date, example: 1634566302532
 }
+
+// APIOperationsHistoryResponse - ..
+type APIOperationsHistoryResponse struct {
+	Success bool                           `json:"success"`
+	Result  OperationsHistoryDataContainer `json:"result"`
+}
+
+// OperationsHistoryDataContainer - ..
+type OperationsHistoryDataContainer struct {
+	Items []TradeHistoryData `json:"items"`
+}
