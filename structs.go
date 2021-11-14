@@ -9,7 +9,7 @@ type Client struct {
 type Credentials struct {
 	AccountPublicKey string `json:"PublicKey"` // Utopia Account public key
 	Password         string `json:"password"`  // Exchange User password
-	TwoFACode        string `json:"2fa_pin"`   // 2-factor-authorization code
+	TwoFACode        string `json:"2fa_pin"`   // 2-factor-authorization code. optional
 }
 
 // APIPlainResponse - ..
