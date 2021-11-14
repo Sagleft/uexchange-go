@@ -30,6 +30,25 @@ type APIAuthResultContainer struct {
 	AuthToken   string          `json:"auth_token"`
 }
 
+// UserSessionData - ..
+type UserSessionData struct {
+	User       UserData       `json:"user"`
+	APISession APISessionData `json:"session"`
+}
+
+// UserData - ..
+type UserData struct {
+	ID     string `json:"id"`     // exchange user ID -- UUID format
+	Name   string `json:"name"`   // username
+	Status string `json:"status"` // example: active
+	Lang   string `json:"lang"`   // user language
+}
+
+// APISessionData - ..
+type APISessionData struct {
+	ID string `json:"id"` // session ID -- UUID format
+}
+
 // APIBalanceResponse - ..
 type APIBalanceResponse struct {
 	Success bool            `json:"success"`
@@ -133,21 +152,11 @@ type BookValueData struct {
 	Value  float64 `json:"value"`  // example: 272.436
 }
 
-// UserSessionData - ..
-type UserSessionData struct {
-	User       UserData       `json:"user"`
-	APISession APISessionData `json:"session"`
+// APICurrenciesListResponse - ..
+type APICurrenciesListResponse struct {
+	Success bool               `json:"success"`
+	Result  CurrenciesListData `json:"result"`
 }
 
-// UserData - ..
-type UserData struct {
-	ID     string `json:"id"`     // exchange user ID -- UUID format
-	Name   string `json:"name"`   // username
-	Status string `json:"status"` // example: active
-	Lang   string `json:"lang"`   // user language
-}
-
-// APISessionData - ..
-type APISessionData struct {
-	ID string `json:"id"` // session ID -- UUID format
-}
+// CurrenciesListData - ..
+type CurrenciesListData map[string]CurrencyData
