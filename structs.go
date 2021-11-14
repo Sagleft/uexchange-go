@@ -114,6 +114,25 @@ type CurrencyData struct {
 	Visible       bool    `json:"show"`             // example: true
 }
 
+// APIBookValueResponse - ..
+type APIBookValueResponse struct {
+	Success bool                   `json:"success"`
+	Result  BookValueDataContainer `json:"result"`
+}
+
+// BookValueDataContainer - ..
+type BookValueDataContainer struct {
+	Sell []BookValueData `json:"book_sell"`
+	Buy  []BookValueData `json:"book_buy"`
+}
+
+// BookValueData - ..
+type BookValueData struct {
+	Price  float64 `json:"price"`  // example: 0.1752
+	Amount float64 `json:"amount"` // example: 1555
+	Value  float64 `json:"value"`  // example: 272.436
+}
+
 // UserSessionData - ..
 type UserSessionData struct {
 	User       UserData       `json:"user"`
