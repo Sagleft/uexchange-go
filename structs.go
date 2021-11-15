@@ -252,4 +252,4 @@ type OperationsHistoryDataContainer struct {
 	Items []TradeHistoryData `json:"items"`
 }
 
-type emptyMap map[string]interface{}
+type mapTable map[string]interface{}
