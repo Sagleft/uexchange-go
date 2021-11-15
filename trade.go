@@ -23,7 +23,7 @@ func (c *Client) sendTradeTask(orderType string, pairSymbol string, amount, pric
 	}
 
 	if !response.Success {
-		return 0, errors.New("failed to get balance") // TODO
+		return 0, errors.New("failed to send trade task") // TODO
 	}
 	return response.Result.OrderID, nil
 }
@@ -36,4 +36,26 @@ func (c *Client) Buy(pairSymbol string, amount, price float64) (int64, error) {
 // Sell currency. returns order ID
 func (c *Client) Sell(pairSymbol string, amount, price float64) (int64, error) {
 	return c.sendTradeTask("sell", pairSymbol, amount, price)
+}
+
+// Hold or Unhold order
+func (c *Client) Hold(orderID int64) error {
+	body, err := c.sendRequest(c.getAPIURL("market/hold"), mapTable{
+		"order_id": orderID,
+	})
+	if err != nil {
+		return err
+	}
+
+	// decode response
+	var response APITradeResponse
+	err = json.Unmarshal(body, &response)
+	if err != nil {
+		return errors.New("failed to decode request response: " + err.Error())
+	}
+
+	if !response.Success {
+		return errors.New("failed to send trade task") // TODO
+	}
+	return nil
 }
