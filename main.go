@@ -20,7 +20,7 @@ func (c *Client) getAPIURL(endpoint string) string {
 }
 
 // Auth client
-func (c *Client) Auth(cred Credentials) error {
+func (c *Client) Auth(cred Credentials) (*APIAuthResultContainer, error) {
 	c.APICredentials = cred
 	body, err := sendRequest(c.getAPIURL("user/login"), map[string]interface{}{
 		"PublicKey": cred.AccountPublicKey,
@@ -28,17 +28,17 @@ func (c *Client) Auth(cred Credentials) error {
 		"2fa_pin":   cred.TwoFACode,
 	})
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	// decode response
 	var response APIAuthResponse
 	err = json.Unmarshal(body, &response)
 	if err != nil {
-		return errors.New("failed to decode request response: " + err.Error())
+		return nil, errors.New("failed to decode request response: " + err.Error())
 	}
 
 	// set auth token
 	c.AuthToken = response.Result.AuthToken
-	return nil
+	return &response.Result, nil
 }
