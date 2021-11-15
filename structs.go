@@ -2,7 +2,8 @@ package uexchange
 
 // Client - ..
 type Client struct {
-	APICredentials Credentials
+	APICredentials Credentials `json:"credentials"`
+	AuthToken      string      `json:"authToken"`
 }
 
 // Credentials - ..
