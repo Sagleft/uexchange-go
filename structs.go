@@ -72,7 +72,12 @@ type BalanceData struct {
 
 // APITradeResponse - ..
 type APITradeResponse struct {
-	Success  bool  `json:"success"`
+	Success bool         `json:"success"`
+	Result  APITradeData `json:"result"`
+}
+
+// APITradeData - ..
+type APITradeData struct {
 	OrderID  int64 `json:"order_id"`
 	DaemonID int64 `json:"daemon_id"`
 }

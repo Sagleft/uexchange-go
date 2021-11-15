@@ -7,7 +7,9 @@ import (
 
 // GetBalance - get balance data for all coins
 func (c *Client) GetBalance() ([]BalanceData, error) {
-	body, err := sendRequest(c.getAPIURL("user/logout"), mapTable{})
+	body, err := sendRequest(c.getAPIURL("user/balance"), mapTable{
+		"auth_token": c.AuthToken,
+	})
 	if err != nil {
 		return nil, err
 	}

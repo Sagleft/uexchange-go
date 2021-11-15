@@ -31,7 +31,9 @@ func (c *Client) Auth(cred Credentials) (*APIAuthResultContainer, error) {
 
 // Logout - close auth session
 func (c *Client) Logout() error {
-	body, err := sendRequest(c.getAPIURL("user/logout"), mapTable{})
+	body, err := sendRequest(c.getAPIURL("user/logout"), mapTable{
+		"auth_token": c.AuthToken,
+	})
 	if err != nil {
 		return err
 	}
