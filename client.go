@@ -18,23 +18,33 @@ func (c *Client) getAPIURL(endpoint string) string {
 }
 
 func (c *Client) sendRequest(url string, data map[string]interface{}) ([]byte, error) {
+	// declare http client
+	httpClient := &http.Client{}
+
 	// encode data fields to json
 	dataBytes, err := json.Marshal(data)
 	if err != nil {
 		return nil, errors.New("failed to encode request data to json: " + err.Error())
 	}
 
-	// send request
-	resp, err := http.Post(url, "application/json", bytes.NewBuffer(dataBytes))
+	// declare HTTP Method and Url
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(dataBytes))
 	if err != nil {
 		return nil, errors.New("failed to send POST request: " + err.Error())
 	}
-	defer resp.Body.Close()
+
+	// set cookie
+	req.Header.Set("Cookie", "auth_token="+c.AuthToken)
+
+	// send request
+	resp, err := httpClient.Do(req)
 
 	// read response
-	responseBody, err := ioutil.ReadAll(resp.Body)
+	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, errors.New("failed to read request response: " + err.Error())
 	}
-	return responseBody, nil
+
+	defer resp.Body.Close()
+	return body, nil
 }

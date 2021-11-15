@@ -7,10 +7,9 @@ import (
 
 func (c *Client) sendTradeTask(orderType string, pairSymbol string, amount, price float64) (int64, error) {
 	body, err := c.sendRequest(c.getAPIURL("market/"+orderType), mapTable{
-		"pair":       pairSymbol,
-		"amount":     amount,
-		"price":      price,
-		"auth_token": c.AuthToken,
+		"pair":   pairSymbol,
+		"amount": amount,
+		"price":  price,
 	})
 	if err != nil {
 		return 0, err
