@@ -8,7 +8,7 @@ import (
 // Auth client
 func (c *Client) Auth(cred Credentials) (*APIAuthResultContainer, error) {
 	c.APICredentials = cred
-	body, err := sendRequest(c.getAPIURL("user/login"), map[string]interface{}{
+	body, err := c.sendRequest(c.getAPIURL("user/login"), map[string]interface{}{
 		"PublicKey": cred.AccountPublicKey,
 		"password":  cred.Password,
 		"2fa_pin":   cred.TwoFACode,
@@ -31,7 +31,7 @@ func (c *Client) Auth(cred Credentials) (*APIAuthResultContainer, error) {
 
 // Logout - close auth session
 func (c *Client) Logout() error {
-	body, err := sendRequest(c.getAPIURL("user/logout"), mapTable{
+	body, err := c.sendRequest(c.getAPIURL("user/logout"), mapTable{
 		"auth_token": c.AuthToken,
 	})
 	if err != nil {

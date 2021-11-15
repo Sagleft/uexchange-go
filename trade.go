@@ -6,7 +6,7 @@ import (
 )
 
 func (c *Client) sendTradeTask(orderType string, pairSymbol string, amount, price float64) (int64, error) {
-	body, err := sendRequest(c.getAPIURL("market/"+orderType), mapTable{
+	body, err := c.sendRequest(c.getAPIURL("market/"+orderType), mapTable{
 		"pair":       pairSymbol,
 		"amount":     amount,
 		"price":      price,
