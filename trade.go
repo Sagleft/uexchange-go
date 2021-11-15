@@ -81,3 +81,23 @@ func (c *Client) Cancel(orderID int64) error {
 	}
 	return nil
 }
+
+// GetPairs - get trading pairs list
+func (c *Client) GetPairs() ([]PairsDataContainer, error) {
+	body, err := c.sendRequest(c.getAPIURL("market/pairs"), mapTable{})
+	if err != nil {
+		return nil, err
+	}
+
+	// decode response
+	var response APIPairsResponse
+	err = json.Unmarshal(body, &response)
+	if err != nil {
+		return nil, errors.New("failed to decode request response: " + err.Error())
+	}
+
+	if !response.Success {
+		return nil, errors.New("failed to get pairs list") // TODO
+	}
+	return response.Result, nil
+}
