@@ -28,3 +28,23 @@ func (c *Client) Auth(cred Credentials) (*APIAuthResultContainer, error) {
 	c.AuthToken = response.Result.AuthToken
 	return &response.Result, nil
 }
+
+// Logout - close auth session
+func (c *Client) Logout() error {
+	body, err := sendRequest(c.getAPIURL("user/logout"), emptyMap{})
+	if err != nil {
+		return err
+	}
+
+	// decode response
+	var response APIPlainResponse
+	err = json.Unmarshal(body, &response)
+	if err != nil {
+		return errors.New("failed to decode request response: " + err.Error())
+	}
+
+	if !response.Success {
+		return errors.New("failed to logout") // TODO
+	}
+	return nil
+}

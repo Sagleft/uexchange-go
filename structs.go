@@ -251,3 +251,5 @@ type APIOperationsHistoryResponse struct {
 type OperationsHistoryDataContainer struct {
 	Items []TradeHistoryData `json:"items"`
 }
+
+type emptyMap map[string]interface{}
