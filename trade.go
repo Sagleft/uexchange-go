@@ -5,9 +5,8 @@ import (
 	"errors"
 )
 
-// Buy currency. returns order ID
-func (c *Client) Buy(pairSymbol string, amount, price float64) (int64, error) {
-	body, err := sendRequest(c.getAPIURL("market/buy"), mapTable{
+func (c *Client) sendTradeTask(orderType string, pairSymbol string, amount, price float64) (int64, error) {
+	body, err := sendRequest(c.getAPIURL("market/"+orderType), mapTable{
 		"pair":       pairSymbol,
 		"amount":     amount,
 		"price":      price,
@@ -28,4 +27,14 @@ func (c *Client) Buy(pairSymbol string, amount, price float64) (int64, error) {
 		return 0, errors.New("failed to get balance") // TODO
 	}
 	return response.Result.OrderID, nil
+}
+
+// Buy currency. returns order ID
+func (c *Client) Buy(pairSymbol string, amount, price float64) (int64, error) {
+	return c.sendTradeTask("buy", pairSymbol, amount, price)
+}
+
+// Sell currency. returns order ID
+func (c *Client) Sell(pairSymbol string, amount, price float64) (int64, error) {
+	return c.sendTradeTask("sell", pairSymbol, amount, price)
 }
