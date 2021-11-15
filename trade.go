@@ -59,3 +59,25 @@ func (c *Client) Hold(orderID int64) error {
 	}
 	return nil
 }
+
+// Cancel the specified order
+func (c *Client) Cancel(orderID int64) error {
+	body, err := c.sendRequest(c.getAPIURL("market/cancel"), mapTable{
+		"order_id": orderID,
+	})
+	if err != nil {
+		return err
+	}
+
+	// decode response
+	var response APITradeResponse
+	err = json.Unmarshal(body, &response)
+	if err != nil {
+		return errors.New("failed to decode request response: " + err.Error())
+	}
+
+	if !response.Success {
+		return errors.New("failed to send trade task") // TODO
+	}
+	return nil
+}
