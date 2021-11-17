@@ -123,3 +123,25 @@ func (c *Client) GetOrderBook(pairSymbol string) (*BookValueDataContainer, error
 	}
 	return &response.Result, nil
 }
+
+// GetMarketCurrenciesList - get exchange currencies list
+func (c *Client) GetMarketCurrenciesList(pairSymbol string) (*CurrenciesListData, error) {
+	body, err := c.sendRequest(c.getAPIURL("market/pairs"), mapTable{
+		"pair": pairSymbol,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	// decode response
+	var response APICurrenciesListResponse
+	err = json.Unmarshal(body, &response)
+	if err != nil {
+		return nil, errors.New("failed to decode request response: " + err.Error())
+	}
+
+	if !response.Success {
+		return nil, errors.New("failed to get currencies list") // TODO
+	}
+	return &response.Result, nil
+}
