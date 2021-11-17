@@ -104,7 +104,7 @@ func (c *Client) GetPairs() ([]PairsDataContainer, error) {
 
 // GetOrderBook by trade pair
 func (c *Client) GetOrderBook(pairSymbol string) (*BookValueDataContainer, error) {
-	body, err := c.sendRequest(c.getAPIURL("market/pairs"), mapTable{
+	body, err := c.sendRequest(c.getAPIURL("market/panel"), mapTable{
 		"pair": pairSymbol,
 	})
 	if err != nil {
@@ -126,7 +126,7 @@ func (c *Client) GetOrderBook(pairSymbol string) (*BookValueDataContainer, error
 
 // GetMarketCurrenciesList - get exchange currencies list
 func (c *Client) GetMarketCurrenciesList(pairSymbol string) (*CurrenciesListData, error) {
-	body, err := c.sendRequest(c.getAPIURL("market/pairs"), mapTable{
+	body, err := c.sendRequest(c.getAPIURL("market/curlist"), mapTable{
 		"pair": pairSymbol,
 	})
 	if err != nil {
