@@ -101,3 +101,25 @@ func (c *Client) GetPairs() ([]PairsDataContainer, error) {
 	}
 	return response.Result, nil
 }
+
+// GetOrderBook by trade pair
+func (c *Client) GetOrderBook(pairSymbol string) (*BookValueDataContainer, error) {
+	body, err := c.sendRequest(c.getAPIURL("market/pairs"), mapTable{
+		"pair": pairSymbol,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	// decode response
+	var response APIBookValueResponse
+	err = json.Unmarshal(body, &response)
+	if err != nil {
+		return nil, errors.New("failed to decode request response: " + err.Error())
+	}
+
+	if !response.Success {
+		return nil, errors.New("failed to get order book by pair") // TODO
+	}
+	return &response.Result, nil
+}
