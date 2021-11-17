@@ -61,3 +61,25 @@ func (s *GetOrdersService) Do() (*OrdersDataContainer, error) {
 	}
 	return &response.Result, nil
 }
+
+// GetOrderHistory - get orders history
+func (c *Client) GetOrderHistory(orderID string) (*OrdersHistoryDataContainer, error) {
+	body, err := c.sendRequest(c.getAPIURL("orders/history"), mapTable{
+		"order_id": orderID,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	// decode response
+	var response APIOrdersHistoryResponse
+	err = json.Unmarshal(body, &response)
+	if err != nil {
+		return nil, errors.New("failed to decode request response: " + err.Error())
+	}
+
+	if !response.Success {
+		return nil, errors.New("failed to get order history") // TODO
+	}
+	return &response.Result, nil
+}
