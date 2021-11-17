@@ -8,3 +8,15 @@ Library for working with the exchange UUSD and Crypton written in Golang
 [![Build Status](https://travis-ci.org/sagleft/uexchange-go.svg?branch=master)](https://travis-ci.org/sagleft/uexchange-go)
 
 [Crypton Exchange API docs](https://crp.is/api-doc/)
+
+Install
+-----
+
+```bash
+go get github.com/Sagleft/uexchange-go
+```
+
+```go
+import (
+	utopiago "github.com/Sagleft/uexchange-go"
+)
