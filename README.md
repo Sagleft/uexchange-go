@@ -18,5 +18,31 @@ go get github.com/Sagleft/uexchange-go
 
 ```go
 import (
-	utopiago "github.com/Sagleft/uexchange-go"
+	uexchange "github.com/Sagleft/uexchange-go"
 )
+```
+
+Usage
+-----
+
+```go
+// create client
+client := uexchange.NewClient()
+
+// auth
+_, err := client.Auth(uexchange.Credentials{
+    AccountPublicKey: "32AE83EF83637ADDA5800E2C9EEB3D456753B0B2CD11D37B90DFA1A1592ED952",
+    Password: "mypassword",
+})
+if err != nil {
+    log.Fatalln(err)
+}
+
+// get balance
+balanceData, err := client.GetBalance()
+if err != nil {
+    log.Fatalln(err)
+}
+log.Println(balanceData)
+
+```
