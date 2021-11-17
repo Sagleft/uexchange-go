@@ -34,7 +34,9 @@ func (c *Client) sendRequest(url string, data map[string]interface{}) ([]byte, e
 	}
 
 	// set cookie
-	req.Header.Set("Cookie", "auth_token="+c.AuthToken)
+	if c.AuthToken != "" {
+		req.Header.Set("Cookie", "auth_token="+c.AuthToken)
+	}
 
 	// send request
 	resp, err := httpClient.Do(req)
