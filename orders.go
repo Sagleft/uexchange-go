@@ -43,6 +43,7 @@ func (s *GetOrdersService) Do() (*OrdersDataContainer, error) {
 
 	body, err := s.ExchangeClient.sendRequest(
 		s.ExchangeClient.getAPIURL("orders"), // endpoint
+		"GET",                                // request type
 		requestFieldsMap,                     // reuqest fields
 	)
 	if err != nil {
@@ -64,7 +65,7 @@ func (s *GetOrdersService) Do() (*OrdersDataContainer, error) {
 
 // GetOrderHistory - get orders history
 func (c *Client) GetOrderHistory(orderID string) (*OrdersHistoryDataContainer, error) {
-	body, err := c.sendRequest(c.getAPIURL("orders/history"), mapTable{
+	body, err := c.sendRequest(c.getAPIURL("orders/history"), "POST", mapTable{
 		"order_id": orderID,
 	})
 	if err != nil {

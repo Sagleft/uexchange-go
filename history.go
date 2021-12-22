@@ -7,7 +7,7 @@ import (
 
 // GetTradeHistory - get trading history by pairs
 func (c *Client) GetTradeHistory(pairSymbol string) (*TradeHistoryDataContainer, error) {
-	body, err := c.sendRequest(c.getAPIURL("history/trade"), mapTable{
+	body, err := c.sendRequest(c.getAPIURL("history/trade"), "GET", mapTable{
 		"pair": pairSymbol,
 	})
 	if err != nil {
@@ -89,6 +89,7 @@ func (s *GetAccountHistoryService) Do() (*OperationsHistoryDataContainer, error)
 
 	body, err := s.ExchangeClient.sendRequest(
 		s.ExchangeClient.getAPIURL("history"), // endpoint
+		"POST",                                // request type
 		requestFieldsMap,                      // request fields
 	)
 	if err != nil {

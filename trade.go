@@ -6,7 +6,7 @@ import (
 )
 
 func (c *Client) sendTradeTask(orderType string, pairSymbol string, amount, price float64) (int64, error) {
-	body, err := c.sendRequest(c.getAPIURL("market/"+orderType), mapTable{
+	body, err := c.sendRequest(c.getAPIURL("market/"+orderType), "POST", mapTable{
 		"pair":   pairSymbol,
 		"amount": amount,
 		"price":  price,
@@ -40,7 +40,7 @@ func (c *Client) Sell(pairSymbol string, amount, price float64) (int64, error) {
 
 // Hold or Unhold order
 func (c *Client) Hold(orderID int64) error {
-	body, err := c.sendRequest(c.getAPIURL("market/hold"), mapTable{
+	body, err := c.sendRequest(c.getAPIURL("market/hold"), "POST", mapTable{
 		"order_id": orderID,
 	})
 	if err != nil {
@@ -62,7 +62,7 @@ func (c *Client) Hold(orderID int64) error {
 
 // Cancel the specified order
 func (c *Client) Cancel(orderID int64) error {
-	body, err := c.sendRequest(c.getAPIURL("market/cancel"), mapTable{
+	body, err := c.sendRequest(c.getAPIURL("market/cancel"), "POST", mapTable{
 		"order_id": orderID,
 	})
 	if err != nil {
@@ -84,7 +84,7 @@ func (c *Client) Cancel(orderID int64) error {
 
 // GetPairs - get trading pairs list
 func (c *Client) GetPairs() ([]PairsDataContainer, error) {
-	body, err := c.sendRequest(c.getAPIURL("market/pairs"), mapTable{})
+	body, err := c.sendRequest(c.getAPIURL("market/pairs"), "GET", mapTable{})
 	if err != nil {
 		return nil, err
 	}
@@ -104,7 +104,7 @@ func (c *Client) GetPairs() ([]PairsDataContainer, error) {
 
 // GetOrderBook by trade pair
 func (c *Client) GetOrderBook(pairSymbol string) (*BookValueDataContainer, error) {
-	body, err := c.sendRequest(c.getAPIURL("market/panel"), mapTable{
+	body, err := c.sendRequest(c.getAPIURL("market/panel"), "POST", mapTable{
 		"pair": pairSymbol,
 	})
 	if err != nil {
@@ -126,7 +126,7 @@ func (c *Client) GetOrderBook(pairSymbol string) (*BookValueDataContainer, error
 
 // GetMarketCurrenciesList - get exchange currencies list
 func (c *Client) GetMarketCurrenciesList(pairSymbol string) (*CurrenciesListData, error) {
-	body, err := c.sendRequest(c.getAPIURL("market/curlist"), mapTable{
+	body, err := c.sendRequest(c.getAPIURL("market/curlist"), "GET", mapTable{
 		"pair": pairSymbol,
 	})
 	if err != nil {

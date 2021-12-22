@@ -17,7 +17,7 @@ func (c *Client) getAPIURL(endpoint string) string {
 	return apiHost + ":" + apiPort + "/" + endpoint
 }
 
-func (c *Client) sendRequest(url string, data map[string]interface{}) ([]byte, error) {
+func (c *Client) sendRequest(url string, requestType string, data map[string]interface{}) ([]byte, error) {
 	// declare http client
 	httpClient := &http.Client{}
 
@@ -28,9 +28,17 @@ func (c *Client) sendRequest(url string, data map[string]interface{}) ([]byte, e
 	}
 
 	// declare HTTP Method and Url
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(dataBytes))
+	switch requestType {
+	default:
+		return nil, errors.New("invalid request type given: " + requestType)
+	case "POST":
+		break
+	case "GET":
+		break
+	}
+	req, err := http.NewRequest(requestType, url, bytes.NewBuffer(dataBytes))
 	if err != nil {
-		return nil, errors.New("failed to send POST request: " + err.Error())
+		return nil, errors.New("failed to send " + requestType + " request: " + err.Error())
 	}
 
 	// set cookie
