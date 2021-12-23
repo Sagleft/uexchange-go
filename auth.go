@@ -7,6 +7,13 @@ import (
 
 // Auth client
 func (c *Client) Auth(cred Credentials) (*APIAuthResultContainer, error) {
+	if cred.AccountPublicKey == "" {
+		return nil, errors.New("account public key is not set")
+	}
+	if cred.Password == "" {
+		return nil, errors.New("password is not set")
+	}
+
 	c.APICredentials = cred
 	body, err := c.sendRequest(c.getAPIURL("user/login"), "POST", map[string]interface{}{
 		"PublicKey": cred.AccountPublicKey,
