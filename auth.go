@@ -30,6 +30,12 @@ func (c *Client) Auth(cred Credentials) (*APIAuthResultContainer, error) {
 	if err != nil {
 		return nil, errors.New("failed to decode request response: " + err.Error())
 	}
+	if !response.Success {
+		if response.Error != "" {
+			return nil, errors.New(response.Error)
+		}
+		return nil, errors.New("failed to auth, unknown error")
+	}
 
 	// set auth token
 	c.AuthToken = response.Result.AuthToken

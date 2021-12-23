@@ -22,6 +22,7 @@ type APIPlainResponse struct {
 // APIAuthResponse - ..
 type APIAuthResponse struct {
 	Success bool                   `json:"success"`
+	Error   string                 `json:"text"`
 	Result  APIAuthResultContainer `json:"result"`
 }
 
