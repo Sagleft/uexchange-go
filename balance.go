@@ -27,7 +27,10 @@ func (c *Client) GetBalance() ([]BalanceData, error) {
 	}
 
 	if !response.Success {
-		return nil, errors.New("failed to get balance") // TODO
+		if response.Error != "" {
+			return nil, errors.New(response.Error)
+		}
+		return nil, errors.New("failed to get balance")
 	}
 	return response.Result.AllBalance, nil
 }

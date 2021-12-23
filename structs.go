@@ -53,6 +53,7 @@ type APISessionData struct {
 // APIBalanceResponse - ..
 type APIBalanceResponse struct {
 	Success bool            `json:"success"`
+	Error   string          `json:"text"` // srly? text? oh my god, crp.is developers...
 	Result  BalanceResponse `json:"result"`
 }
 
