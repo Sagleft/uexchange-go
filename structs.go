@@ -66,7 +66,7 @@ type BalanceResponse struct {
 
 // BalanceData - ..
 type BalanceData struct {
-	ID       string       `json:"id"`
+	ID       int          `json:"id"`
 	Currency CurrencyData `json:"currency"`
 	Reserve  float64      `json:"reserve"`
 	Balance  float64      `json:"balance"`
@@ -98,7 +98,7 @@ type PairsDataContainer struct {
 
 // PairData - ..
 type PairData struct {
-	ID              int     `json:"pair_id"`           // example: 25
+	ID              int64   `json:"pair_id"`           // example: 25
 	PairCode        string  `json:"pair"`              // example: crp_usdt
 	PairTitle       string  `json:"pair_show"`         // example: CRP / USDT
 	CoinsGroup      string  `json:"group"`             // example: crp
@@ -126,7 +126,7 @@ type MarketDataContainer struct {
 
 // CurrencyData - ..
 type CurrencyData struct {
-	ID            string  `json:"id"`
+	ID            int64   `json:"id"`
 	Name          string  `json:"name"`             // example: crp
 	FullName      string  `json:"fullname"`         // example: Utopia Crypton
 	AppName       string  `json:"appname"`          // example: crypton
