@@ -3,11 +3,12 @@ package uexchange
 import (
 	"encoding/json"
 	"errors"
+	"net/url"
 )
 
 // GetBalance - get balance data for all coins
 func (c *Client) GetBalance() ([]BalanceData, error) {
-	body, err := c.sendRequest(c.getAPIURL("user/balance"), "GET", mapTable{})
+	body, err := c.sendRequest(c.getAPIURL("user/balance"), "GET", url.Values{})
 	if err != nil {
 		return nil, err
 	}

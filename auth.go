@@ -3,6 +3,7 @@ package uexchange
 import (
 	"encoding/json"
 	"errors"
+	"net/url"
 )
 
 // Auth client
@@ -15,11 +16,12 @@ func (c *Client) Auth(cred Credentials) (*APIAuthResultContainer, error) {
 	}
 
 	c.APICredentials = cred
-	body, err := c.sendRequest(c.getAPIURL("user/login"), "POST", map[string]interface{}{
-		"PublicKey": cred.AccountPublicKey,
-		"password":  cred.Password,
-		"2fa_pin":   cred.TwoFACode,
-	})
+	reqFields := url.Values{}
+	reqFields.Add("PublicKey", cred.AccountPublicKey)
+	reqFields.Add("password", cred.Password)
+	reqFields.Add("2fa_pin", cred.TwoFACode)
+
+	body, err := c.sendRequest(c.getAPIURL("user/login"), "POST", reqFields)
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +46,7 @@ func (c *Client) Auth(cred Credentials) (*APIAuthResultContainer, error) {
 
 // Logout - close auth session
 func (c *Client) Logout() error {
-	body, err := c.sendRequest(c.getAPIURL("user/logout"), "POST", mapTable{})
+	body, err := c.sendRequest(c.getAPIURL("user/logout"), "POST", url.Values{})
 	if err != nil {
 		return err
 	}

@@ -3,6 +3,7 @@ package uexchange
 import (
 	"encoding/json"
 	"errors"
+	"net/url"
 )
 
 // GetOrdersService - get orders service with optional params
@@ -33,12 +34,12 @@ func (s *GetOrdersService) SetTaskType(taskType string) *GetOrdersService {
 
 // Do request
 func (s *GetOrdersService) Do() (*OrdersDataContainer, error) {
-	requestFieldsMap := mapTable{}
+	requestFieldsMap := url.Values{}
 	if s.OrderType != "" {
-		requestFieldsMap["status"] = s.OrderType
+		requestFieldsMap.Add("status", s.OrderType)
 	}
 	if s.TaskType != "" {
-		requestFieldsMap["task"] = s.TaskType
+		requestFieldsMap.Add("task", s.TaskType)
 	}
 
 	body, err := s.ExchangeClient.sendRequest(
@@ -65,9 +66,9 @@ func (s *GetOrdersService) Do() (*OrdersDataContainer, error) {
 
 // GetOrderHistory - get orders history
 func (c *Client) GetOrderHistory(orderID string) (*OrdersHistoryDataContainer, error) {
-	body, err := c.sendRequest(c.getAPIURL("orders/history"), "POST", mapTable{
-		"order_id": orderID,
-	})
+	reqFields := url.Values{}
+	reqFields.Add("order_id", orderID)
+	body, err := c.sendRequest(c.getAPIURL("orders/history"), "POST", reqFields)
 	if err != nil {
 		return nil, err
 	}

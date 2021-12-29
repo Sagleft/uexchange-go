@@ -1,11 +1,11 @@
 package uexchange
 
 import (
-	"bytes"
-	"encoding/json"
 	"errors"
 	"io/ioutil"
 	"net/http"
+	"net/url"
+	"strings"
 )
 
 // NewClient - ..
@@ -17,37 +17,57 @@ func (c *Client) getAPIURL(endpoint string) string {
 	return apiHost + ":" + apiPort + "/" + endpoint
 }
 
-func (c *Client) sendRequest(url string, requestType string, data map[string]interface{}) ([]byte, error) {
-	// declare http client
-	httpClient := &http.Client{}
-
-	// encode data fields to json
-	dataBytes, err := json.Marshal(data)
-	if err != nil {
-		return nil, errors.New("failed to encode request data to json: " + err.Error())
-	}
-
-	// declare HTTP Method and Url
+func (c *Client) sendRequest(requestURL string, requestType string, params url.Values) ([]byte, error) {
 	switch requestType {
 	default:
 		return nil, errors.New("invalid request type given: " + requestType)
 	case "POST":
-		break
+		return c.sendPOSTRequest(requestURL, params)
 	case "GET":
-		break
+		return c.sendGETRequest(requestURL, params)
 	}
-	req, err := http.NewRequest(requestType, url, bytes.NewBuffer(dataBytes))
+}
+
+func (c *Client) sendGETRequest(requestURL string, params url.Values) ([]byte, error) {
+	// send request
+	resp, err := http.Get(requestURL + "?" + params.Encode())
 	if err != nil {
-		return nil, errors.New("failed to send " + requestType + " request: " + err.Error())
+		return nil, err
+	}
+
+	// read response
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, errors.New("failed to read request response: " + err.Error())
+	}
+
+	defer resp.Body.Close()
+	return body, nil
+}
+
+func (c *Client) sendPOSTRequest(requestURL string, params url.Values) ([]byte, error) {
+	// declare http client
+	httpClient := &http.Client{}
+
+	// create request
+	req, err := http.NewRequest("POST", requestURL, strings.NewReader(params.Encode()))
+	if err != nil {
+		return nil, errors.New("failed to send POST request: " + err.Error())
 	}
 
 	// set cookie
 	if c.AuthToken != "" {
-		req.Header.Set("Cookie", "auth_token="+c.AuthToken)
+		req.AddCookie(&http.Cookie{
+			Name:  "auth_token",
+			Value: c.AuthToken,
+		})
 	}
 
 	// send request
 	resp, err := httpClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
 
 	// read response
 	body, err := ioutil.ReadAll(resp.Body)

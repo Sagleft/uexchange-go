@@ -3,13 +3,14 @@ package uexchange
 import (
 	"encoding/json"
 	"errors"
+	"net/url"
 )
 
 // GetTradeHistory - get trading history by pairs
 func (c *Client) GetTradeHistory(pairSymbol string) (*TradeHistoryDataContainer, error) {
-	body, err := c.sendRequest(c.getAPIURL("history/trade"), "GET", mapTable{
-		"pair": pairSymbol,
-	})
+	reqFields := url.Values{}
+	reqFields.Add("pair", pairSymbol)
+	body, err := c.sendRequest(c.getAPIURL("history/trade"), "GET", reqFields)
 	if err != nil {
 		return nil, err
 	}
@@ -74,17 +75,16 @@ func (s *GetAccountHistoryService) SetCurrency(newCurrency string) *GetAccountHi
 
 // Do request
 func (s *GetAccountHistoryService) Do() (*OperationsHistoryDataContainer, error) {
-	requestFieldsMap := mapTable{
-		"type": s.RequestType,
-	}
+	requestFieldsMap := url.Values{}
+	requestFieldsMap.Add("type", s.RequestType)
 	if s.FromID != "" {
-		requestFieldsMap["from_id"] = s.FromID
+		requestFieldsMap.Add("from_id", s.FromID)
 	}
 	if s.RecordType != "" {
-		requestFieldsMap["record_type"] = s.RecordType
+		requestFieldsMap.Add("record_type", s.RecordType)
 	}
 	if s.Currency != "" {
-		requestFieldsMap["currency"] = s.Currency
+		requestFieldsMap.Add("currency", s.Currency)
 	}
 
 	body, err := s.ExchangeClient.sendRequest(
