@@ -29,8 +29,26 @@ func (c *Client) sendRequest(requestURL string, requestType string, params url.V
 }
 
 func (c *Client) sendGETRequest(requestURL string, params url.Values) ([]byte, error) {
+	// declare http client
+	httpClient := &http.Client{}
+
+	// create request
+	urlWithParams := requestURL + "?" + params.Encode()
+	req, err := http.NewRequest("GET", urlWithParams, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	// set cookie
+	if c.AuthToken != "" {
+		req.AddCookie(&http.Cookie{
+			Name:  "auth_token",
+			Value: c.AuthToken,
+		})
+	}
+
 	// send request
-	resp, err := http.Get(requestURL + "?" + params.Encode())
+	resp, err := httpClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
