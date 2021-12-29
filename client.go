@@ -81,6 +81,9 @@ func (c *Client) sendPOSTRequest(requestURL string, params url.Values) ([]byte, 
 		})
 	}
 
+	// set headers
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded;")
+
 	// send request
 	resp, err := httpClient.Do(req)
 	if err != nil {
