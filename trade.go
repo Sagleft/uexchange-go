@@ -102,7 +102,7 @@ func (c *Client) GetPairs() ([]PairsDataContainer, error) {
 	if !response.Success {
 		return nil, errors.New("failed to get pairs list") // TODO
 	}
-	return response.Result, nil
+	return response.Result.Pairs, nil
 }
 
 // GetOrderBook by trade pair

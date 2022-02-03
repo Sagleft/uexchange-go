@@ -86,8 +86,13 @@ type APITradeData struct {
 
 // APIPairsResponse - ..
 type APIPairsResponse struct {
-	Success bool                 `json:"success"`
-	Result  []PairsDataContainer `json:"pairs"`
+	Success bool         `json:"success"`
+	Result  APIPairsData `json:"result"`
+}
+
+// APIPairsData - ..
+type APIPairsData struct {
+	Pairs []PairsDataContainer `json:"pairs"`
 }
 
 // PairsDataContainer - ..
