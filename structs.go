@@ -97,7 +97,7 @@ type APIPairsData struct {
 
 // PairsDataContainer - ..
 type PairsDataContainer struct {
-	Pair       PairData            `json:"pairs"`
+	Pair       PairData            `json:"pair"`
 	MarketData MarketDataContainer `json:"data_market"`
 }
 
