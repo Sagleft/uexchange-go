@@ -150,7 +150,9 @@ func (c *Client) GetMarketCurrenciesList(pairSymbol string) (*CurrenciesListData
 }
 
 func (c *Client) GetPairPrice(pairCode string) (PairPriceData, error) {
-	result := PairPriceData{}
+	result := PairPriceData{
+		PairCode: pairCode,
+	}
 	pairs, err := c.GetPairs()
 	if err != nil {
 		return result, err
