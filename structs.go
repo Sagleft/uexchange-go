@@ -265,3 +265,9 @@ type OperationsHistoryDataContainer struct {
 }
 
 type mapTable map[string]interface{}
+
+type PairPriceData struct {
+	PairSymbol   string
+	BestAskPrice float64
+	BestBidPrice float64
+}

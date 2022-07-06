@@ -148,3 +148,33 @@ func (c *Client) GetMarketCurrenciesList(pairSymbol string) (*CurrenciesListData
 	}
 	return &response.Result, nil
 }
+
+func (c *Client) GetPairPrice(pairCode string) (PairPriceData, error) {
+	result := PairPriceData{}
+	pairs, err := c.GetPairs()
+	if err != nil {
+		return result, err
+	}
+
+	for i := 0; i < len(pairs); i++ {
+		pairData := pairs[i]
+		if pairData.Pair.PairCode == pairCode {
+			bookData, err := c.GetOrderBook(pairData.Pair.PairCode)
+			if err != nil {
+				return result, err
+			}
+
+			if len(bookData.Buy) > 0 {
+				result.BestAskPrice = bookData.Buy[0].Price
+			}
+			if len(bookData.Sell) > 0 {
+				result.BestBidPrice = bookData.Sell[0].Price
+			}
+			return result, nil
+		} else {
+			continue
+		}
+	}
+
+	return result, errors.New("pair " + pairCode + " not found")
+}
