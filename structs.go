@@ -75,6 +75,7 @@ type BalanceData struct {
 // APITradeResponse - ..
 type APITradeResponse struct {
 	Success bool         `json:"success"`
+	Error   string       `json:"text"`
 	Result  APITradeData `json:"result"`
 }
 
@@ -87,6 +88,7 @@ type APITradeData struct {
 // APIPairsResponse - ..
 type APIPairsResponse struct {
 	Success bool         `json:"success"`
+	Error   string       `json:"text"`
 	Result  APIPairsData `json:"result"`
 }
 
@@ -149,6 +151,7 @@ type CurrencyData struct {
 // APIBookValueResponse - ..
 type APIBookValueResponse struct {
 	Success bool                   `json:"success"`
+	Error   string                 `json:"text"`
 	Result  BookValueDataContainer `json:"result"`
 }
 
@@ -168,6 +171,7 @@ type BookValueData struct {
 // APICurrenciesListResponse - ..
 type APICurrenciesListResponse struct {
 	Success bool               `json:"success"`
+	Error   string             `json:"text"`
 	Result  CurrenciesListData `json:"result"`
 }
 

@@ -3,6 +3,7 @@ package uexchange
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/url"
 	"strconv"
 )
@@ -22,11 +23,11 @@ func (c *Client) sendTradeTask(orderType string, pairSymbol string, amount, pric
 	var response APITradeResponse
 	err = json.Unmarshal(body, &response)
 	if err != nil {
-		return 0, errors.New("failed to decode request response: " + err.Error())
+		return 0, errors.New("decode request response: " + err.Error())
 	}
 
 	if !response.Success {
-		return 0, errors.New("failed to send trade task") // TODO
+		return 0, fmt.Errorf("send trade task: %s", response.Error)
 	}
 	return response.Result.OrderID, nil
 }
@@ -54,11 +55,11 @@ func (c *Client) Hold(orderID int64) error {
 	var response APITradeResponse
 	err = json.Unmarshal(body, &response)
 	if err != nil {
-		return errors.New("failed to decode request response: " + err.Error())
+		return errors.New("decode request response: " + err.Error())
 	}
 
 	if !response.Success {
-		return errors.New("failed to send trade task") // TODO
+		return fmt.Errorf("send trade task: %s", response.Error)
 	}
 	return nil
 }
@@ -80,7 +81,7 @@ func (c *Client) Cancel(orderID int64) error {
 	}
 
 	if !response.Success {
-		return errors.New("failed to send trade task") // TODO
+		return fmt.Errorf("send trade task: %s", response.Error)
 	}
 	return nil
 }
@@ -100,7 +101,7 @@ func (c *Client) GetPairs() ([]PairsDataContainer, error) {
 	}
 
 	if !response.Success {
-		return nil, errors.New("failed to get pairs list") // TODO
+		return nil, fmt.Errorf("send trade task: %s", response.Error)
 	}
 	return response.Result.Pairs, nil
 }
@@ -122,7 +123,7 @@ func (c *Client) GetOrderBook(pairSymbol string) (*BookValueDataContainer, error
 	}
 
 	if !response.Success {
-		return nil, errors.New("failed to get order book by pair") // TODO
+		return nil, fmt.Errorf("send trade task: %s", response.Error)
 	}
 	return &response.Result, nil
 }
@@ -144,7 +145,7 @@ func (c *Client) GetMarketCurrenciesList(pairSymbol string) (*CurrenciesListData
 	}
 
 	if !response.Success {
-		return nil, errors.New("failed to get currencies list") // TODO
+		return nil, fmt.Errorf("send trade task: %s", response.Error)
 	}
 	return &response.Result, nil
 }
@@ -178,5 +179,5 @@ func (c *Client) GetPairPrice(pairCode string) (PairPriceData, error) {
 		}
 	}
 
-	return result, errors.New("pair " + pairCode + " not found")
+	return result, fmt.Errorf("pair %s not found", pairCode)
 }
