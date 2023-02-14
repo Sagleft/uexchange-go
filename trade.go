@@ -9,10 +9,14 @@ import (
 )
 
 func (c *Client) sendTradeTask(orderType string, pairSymbol string, amount, price float64) (int64, error) {
-	reqFields := url.Values{}
+	reqFields, err := url.ParseQuery(fmt.Sprintf(
+		"amount=%v&price=%v",
+		amount, price,
+	))
+	if err != nil {
+		return 0, fmt.Errorf("parse query: %w", err)
+	}
 	reqFields.Add("pair", pairSymbol)
-	reqFields.Add("amount", strconv.FormatFloat(amount, 'f', 8, 64))
-	reqFields.Add("price", strconv.FormatFloat(price, 'f', 8, 64))
 
 	body, err := c.sendRequest(c.getAPIURL("market/"+orderType), "POST", reqFields)
 	if err != nil {
