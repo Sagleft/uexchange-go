@@ -264,8 +264,6 @@ type OperationsHistoryDataContainer struct {
 	Items []TradeHistoryData `json:"items"`
 }
 
-type mapTable map[string]interface{}
-
 type PairPriceData struct {
 	PairCode     string
 	BestAskPrice float64
