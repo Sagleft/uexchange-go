@@ -1,4 +1,4 @@
-![logo](logo.png)
+![logo](logo.jpg)
 
 Library for working with the exchange UUSD and Crypton written in Golang
 
