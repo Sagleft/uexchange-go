@@ -46,7 +46,8 @@ log.Println(balanceData)
 
 ```
 
-Useful resources:
+## Useful resources
+
 * [Getting access to the Utopia API](https://udocs.gitbook.io/utopia-api/utopia-api/how-to-enable-api-access).
 * [Examples of projects](https://udocs.gitbook.io/utopia-api/utopia-api/examples-of-projects) created based on the Utopia API.
 * [How to create WEB 3.0 chatbots](https://udocs.gitbook.io/utopia-api/utopia-api/creating-chat-bots).
