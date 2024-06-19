@@ -46,9 +46,9 @@ log.Println(balanceData)
 
 ```
 
----
-
-![image](https://github.com/Sagleft/Sagleft/raw/master/image.png)
-
-### :globe_with_meridians: [Telegram канал](https://t.me/+VIvd8j6xvm9iMzhi)
-
+Useful resources:
+* [Getting access to the Utopia API](https://udocs.gitbook.io/utopia-api/utopia-api/how-to-enable-api-access).
+* [Examples of projects](https://udocs.gitbook.io/utopia-api/utopia-api/examples-of-projects) created based on the Utopia API.
+* [How to create WEB 3.0 chatbots](https://udocs.gitbook.io/utopia-api/utopia-api/creating-chat-bots).
+* [How to earn in WEB 3.0](https://udocs.gitbook.io/utopia-api/how-to-earn-in-web-3.0)
+* [Official website](https://u.is/en/) of the Utopia P2P project.
