@@ -3,6 +3,7 @@ package uexchange
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/url"
 )
 
@@ -21,22 +22,19 @@ func (c *Client) Auth(cred Credentials) (*APIAuthResultContainer, error) {
 	reqFields.Add("password", cred.Password)
 	reqFields.Add("2fa_pin", cred.TwoFACode)
 
-	body, err := c.sendRequest(c.getAPIURL("user/login"), "POST", reqFields)
+	body, err := c.sendRequest(c.getAPIURL("user/login"), requestTypePOST, reqFields)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("send request: %w", err)
 	}
 
 	// decode response
 	var response APIAuthResponse
 	err = json.Unmarshal(body, &response)
 	if err != nil {
-		return nil, errors.New("failed to decode request response: " + err.Error())
+		return nil, fmt.Errorf("decode response: %w", err)
 	}
 	if !response.Success {
-		if response.Error != "" {
-			return nil, errors.New(response.Error)
-		}
-		return nil, errors.New("failed to auth, unknown error")
+		return nil, fmt.Errorf("auth: %s", response.Error)
 	}
 
 	// set auth token
@@ -46,7 +44,7 @@ func (c *Client) Auth(cred Credentials) (*APIAuthResultContainer, error) {
 
 // Logout - close auth session
 func (c *Client) Logout() error {
-	body, err := c.sendRequest(c.getAPIURL("user/logout"), "POST", url.Values{})
+	body, err := c.sendRequest(c.getAPIURL("user/logout"), requestTypePOST, url.Values{})
 	if err != nil {
 		return err
 	}
@@ -55,11 +53,11 @@ func (c *Client) Logout() error {
 	var response APIPlainResponse
 	err = json.Unmarshal(body, &response)
 	if err != nil {
-		return errors.New("failed to decode request response: " + err.Error())
+		return fmt.Errorf("decode response: %w", err)
 	}
 
 	if !response.Success {
-		return errors.New("failed to logout") // TODO
+		return fmt.Errorf("logout: %s", response.Error)
 	}
 	return nil
 }

@@ -16,6 +16,7 @@ type Credentials struct {
 // APIPlainResponse - ..
 type APIPlainResponse struct {
 	Success bool   `json:"success"`
+	Error   string `json:"text"`
 	Result  string `json:"result"`
 }
 
@@ -181,6 +182,7 @@ type CurrenciesListData map[string]CurrencyData
 // APIOrdersResponse - response from get orders list
 type APIOrdersResponse struct {
 	Success bool                `json:"success"`
+	Error   string              `json:"text"`
 	Result  OrdersDataContainer `json:"result"`
 }
 
@@ -219,6 +221,7 @@ type PaginationData struct {
 // APIOrdersHistoryResponse - ..
 type APIOrdersHistoryResponse struct {
 	Success bool                       `json:"success"`
+	Error   string                     `json:"text"`
 	Result  OrdersHistoryDataContainer `json:"result"`
 }
 
@@ -238,6 +241,7 @@ type OrdersHistoryPairData struct {
 // APITradeHistoryResponse - ..
 type APITradeHistoryResponse struct {
 	Success bool                      `json:"success"`
+	Error   string                    `json:"text"`
 	Result  TradeHistoryDataContainer `json:"result"`
 }
 
@@ -260,6 +264,7 @@ type TradeHistoryData struct {
 // APIOperationsHistoryResponse - ..
 type APIOperationsHistoryResponse struct {
 	Success bool                           `json:"success"`
+	Error   string                         `json:"text"`
 	Result  OperationsHistoryDataContainer `json:"result"`
 }
 

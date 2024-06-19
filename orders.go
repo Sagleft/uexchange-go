@@ -3,6 +3,7 @@ package uexchange
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/url"
 )
 
@@ -55,11 +56,11 @@ func (s *GetOrdersService) Do() (*OrdersDataContainer, error) {
 	var response APIOrdersResponse
 	err = json.Unmarshal(body, &response)
 	if err != nil {
-		return nil, errors.New("failed to decode request response: " + err.Error())
+		return nil, errors.New("decode request response: " + err.Error())
 	}
 
 	if !response.Success {
-		return nil, errors.New("failed to get orders list") // TODO
+		return nil, fmt.Errorf("get orders list: %s", response.Error)
 	}
 	return &response.Result, nil
 }
@@ -70,18 +71,18 @@ func (c *Client) GetOrderHistory(orderID string) (*OrdersHistoryDataContainer, e
 	reqFields.Add("order_id", orderID)
 	body, err := c.sendRequest(c.getAPIURL("orders/history"), "POST", reqFields)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("send request: %w", err)
 	}
 
 	// decode response
 	var response APIOrdersHistoryResponse
 	err = json.Unmarshal(body, &response)
 	if err != nil {
-		return nil, errors.New("failed to decode request response: " + err.Error())
+		return nil, fmt.Errorf("decode response: %w", err)
 	}
 
 	if !response.Success {
-		return nil, errors.New("failed to get order history") // TODO
+		return nil, fmt.Errorf("get order history: %s", response.Error)
 	}
 	return &response.Result, nil
 }

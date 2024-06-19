@@ -2,7 +2,7 @@ package uexchange
 
 import (
 	"encoding/json"
-	"errors"
+	"fmt"
 	"net/url"
 )
 
@@ -10,7 +10,7 @@ import (
 func (c *Client) GetTradeHistory(pairSymbol string) (*TradeHistoryDataContainer, error) {
 	reqFields := url.Values{}
 	reqFields.Add("pair", pairSymbol)
-	body, err := c.sendRequest(c.getAPIURL("history/trade"), "GET", reqFields)
+	body, err := c.sendRequest(c.getAPIURL("history/trade"), requestTypeGET, reqFields)
 	if err != nil {
 		return nil, err
 	}
@@ -19,23 +19,25 @@ func (c *Client) GetTradeHistory(pairSymbol string) (*TradeHistoryDataContainer,
 	var response APITradeHistoryResponse
 	err = json.Unmarshal(body, &response)
 	if err != nil {
-		return nil, errors.New("failed to decode request response: " + err.Error())
+		return nil, fmt.Errorf("decode response: %w", err)
 	}
 
 	if !response.Success {
-		return nil, errors.New("failed to get trade history") // TODO
+		return nil, fmt.Errorf("get trade history: %s", response.Error)
 	}
 	return &response.Result, nil
 }
 
 // GetAccountHistoryService - get operations history service
 type GetAccountHistoryService struct {
+	// required
 	ExchangeClient *Client
+	RequestType    string // history type: profile/trade/billing
 
-	RequestType string // required. history type: profile/trade/billing
-	FromID      string // optional. pagination offset: uuid
-	RecordType  string // optional. billing operation type (only for billing): payment/comission/withdraw or combined
-	Currency    string // optional. currency (only for billing type)
+	// optional
+	FromID     string // pagination offset: uuid
+	RecordType string // billing operation type (only for billing): payment/comission/withdraw or combined
+	Currency   string // currency (only for billing type)
 }
 
 // NewGetAccountHistoryService - create new get account history service
@@ -100,11 +102,11 @@ func (s *GetAccountHistoryService) Do() (*OperationsHistoryDataContainer, error)
 	var response APIOperationsHistoryResponse
 	err = json.Unmarshal(body, &response)
 	if err != nil {
-		return nil, errors.New("failed to decode request response: " + err.Error())
+		return nil, fmt.Errorf("decode response: %s", err)
 	}
 
 	if !response.Success {
-		return nil, errors.New("failed to get operations history") // TODO
+		return nil, fmt.Errorf("get operations history: %s", response.Error)
 	}
 	return &response.Result, nil
 }

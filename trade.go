@@ -2,13 +2,17 @@ package uexchange
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/url"
 	"strconv"
 )
 
-func (c *Client) sendTradeTask(orderType string, pairSymbol string, amount, price float64) (int64, error) {
+func (c *Client) sendTradeTask(
+	orderType string,
+	pairSymbol string,
+	amount,
+	price float64,
+) (int64, error) {
 	reqFields, err := url.ParseQuery(fmt.Sprintf(
 		"amount=%v&price=%v",
 		amount, price,
@@ -18,7 +22,7 @@ func (c *Client) sendTradeTask(orderType string, pairSymbol string, amount, pric
 	}
 	reqFields.Add("pair", pairSymbol)
 
-	body, err := c.sendRequest(c.getAPIURL("market/"+orderType), "POST", reqFields)
+	body, err := c.sendRequest(c.getAPIURL("market/"+orderType), requestTypePOST, reqFields)
 	if err != nil {
 		return 0, err
 	}
@@ -27,7 +31,7 @@ func (c *Client) sendTradeTask(orderType string, pairSymbol string, amount, pric
 	var response APITradeResponse
 	err = json.Unmarshal(body, &response)
 	if err != nil {
-		return 0, errors.New("decode request response: " + err.Error())
+		return 0, fmt.Errorf("decode response: %w", err)
 	}
 
 	if !response.Success {
@@ -50,7 +54,7 @@ func (c *Client) Sell(pairSymbol string, amount, price float64) (int64, error) {
 func (c *Client) Hold(orderID int64) error {
 	reqFields := url.Values{}
 	reqFields.Add("order_id", strconv.FormatInt(orderID, 10))
-	body, err := c.sendRequest(c.getAPIURL("market/hold"), "POST", reqFields)
+	body, err := c.sendRequest(c.getAPIURL("market/hold"), requestTypePOST, reqFields)
 	if err != nil {
 		return err
 	}
@@ -59,7 +63,7 @@ func (c *Client) Hold(orderID int64) error {
 	var response APITradeResponse
 	err = json.Unmarshal(body, &response)
 	if err != nil {
-		return errors.New("decode request response: " + err.Error())
+		return fmt.Errorf("decode response: %w", err)
 	}
 
 	if !response.Success {
@@ -81,7 +85,7 @@ func (c *Client) Cancel(orderID int64) error {
 	var response APITradeResponse
 	err = json.Unmarshal(body, &response)
 	if err != nil {
-		return errors.New("failed to decode request response: " + err.Error())
+		return fmt.Errorf("decode response: %w", err)
 	}
 
 	if !response.Success {
@@ -92,7 +96,7 @@ func (c *Client) Cancel(orderID int64) error {
 
 // GetPairs - get trading pairs list
 func (c *Client) GetPairs() ([]PairsDataContainer, error) {
-	body, err := c.sendRequest(c.getAPIURL("market/pairs"), "GET", url.Values{})
+	body, err := c.sendRequest(c.getAPIURL("market/pairs"), requestTypeGET, url.Values{})
 	if err != nil {
 		return nil, err
 	}
@@ -101,7 +105,7 @@ func (c *Client) GetPairs() ([]PairsDataContainer, error) {
 	var response APIPairsResponse
 	err = json.Unmarshal(body, &response)
 	if err != nil {
-		return nil, errors.New("failed to decode request response: " + err.Error())
+		return nil, fmt.Errorf("decode response: %w", err)
 	}
 
 	if !response.Success {
@@ -114,7 +118,7 @@ func (c *Client) GetPairs() ([]PairsDataContainer, error) {
 func (c *Client) GetOrderBook(pairSymbol string) (*BookValueDataContainer, error) {
 	reqFields := url.Values{}
 	reqFields.Add("pair", pairSymbol)
-	body, err := c.sendRequest(c.getAPIURL("market/panel"), "POST", reqFields)
+	body, err := c.sendRequest(c.getAPIURL("market/panel"), requestTypePOST, reqFields)
 	if err != nil {
 		return nil, err
 	}
@@ -123,7 +127,7 @@ func (c *Client) GetOrderBook(pairSymbol string) (*BookValueDataContainer, error
 	var response APIBookValueResponse
 	err = json.Unmarshal(body, &response)
 	if err != nil {
-		return nil, errors.New("failed to decode request response: " + err.Error())
+		return nil, fmt.Errorf("decode response: %w", err)
 	}
 
 	if !response.Success {
@@ -145,7 +149,7 @@ func (c *Client) GetMarketCurrenciesList(pairSymbol string) (*CurrenciesListData
 	var response APICurrenciesListResponse
 	err = json.Unmarshal(body, &response)
 	if err != nil {
-		return nil, errors.New("failed to decode request response: " + err.Error())
+		return nil, fmt.Errorf("decode response: %w", err)
 	}
 
 	if !response.Success {
@@ -160,7 +164,7 @@ func (c *Client) GetPairPrice(pairCode string) (PairPriceData, error) {
 	}
 	pairs, err := c.GetPairs()
 	if err != nil {
-		return result, err
+		return result, fmt.Errorf("get pairs: %w", err)
 	}
 
 	for i := 0; i < len(pairs); i++ {
@@ -168,7 +172,7 @@ func (c *Client) GetPairPrice(pairCode string) (PairPriceData, error) {
 		if pairData.Pair.PairCode == pairCode {
 			bookData, err := c.GetOrderBook(pairData.Pair.PairCode)
 			if err != nil {
-				return result, err
+				return result, fmt.Errorf("get order book: %w", err)
 			}
 
 			if len(bookData.Buy) > 0 {

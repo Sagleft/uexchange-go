@@ -3,6 +3,7 @@ package uexchange
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/url"
 )
 
@@ -24,14 +25,11 @@ func (c *Client) GetBalance() ([]BalanceData, error) {
 	var response APIBalanceResponse
 	err = json.Unmarshal(body, &response)
 	if err != nil {
-		return nil, errors.New("failed to decode request response: " + err.Error())
+		return nil, errors.New("decode response: " + err.Error())
 	}
 
 	if !response.Success {
-		if response.Error != "" {
-			return nil, errors.New(response.Error)
-		}
-		return nil, errors.New("failed to get balance")
+		return nil, fmt.Errorf("get balance: %s", response.Error)
 	}
 	return response.Result.AllBalance, nil
 }

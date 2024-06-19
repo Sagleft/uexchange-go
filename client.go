@@ -2,6 +2,7 @@ package uexchange
 
 import (
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -34,7 +35,7 @@ func (c *Client) sendGETRequest(requestURL string, params url.Values) ([]byte, e
 
 	// create request
 	urlWithParams := requestURL + "?" + params.Encode()
-	req, err := http.NewRequest("GET", urlWithParams, nil)
+	req, err := http.NewRequest(requestTypeGET, urlWithParams, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +57,7 @@ func (c *Client) sendGETRequest(requestURL string, params url.Values) ([]byte, e
 	// read response
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return nil, errors.New("failed to read request response: " + err.Error())
+		return nil, fmt.Errorf("read response: %s", err)
 	}
 
 	defer resp.Body.Close()
@@ -68,9 +69,9 @@ func (c *Client) sendPOSTRequest(requestURL string, params url.Values) ([]byte, 
 	httpClient := &http.Client{}
 
 	// create request
-	req, err := http.NewRequest("POST", requestURL, strings.NewReader(params.Encode()))
+	req, err := http.NewRequest(requestTypePOST, requestURL, strings.NewReader(params.Encode()))
 	if err != nil {
-		return nil, errors.New("failed to send POST request: " + err.Error())
+		return nil, fmt.Errorf("send request: %w", err)
 	}
 
 	// set cookie
@@ -82,7 +83,7 @@ func (c *Client) sendPOSTRequest(requestURL string, params url.Values) ([]byte, 
 	}
 
 	// set headers
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded;")
+	req.Header.Set(headerContentType, apiRequestContentType)
 
 	// send request
 	resp, err := httpClient.Do(req)
@@ -93,7 +94,7 @@ func (c *Client) sendPOSTRequest(requestURL string, params url.Values) ([]byte, 
 	// read response
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return nil, errors.New("failed to read request response: " + err.Error())
+		return nil, fmt.Errorf("read response: %s", err)
 	}
 
 	defer resp.Body.Close()
