@@ -2,7 +2,7 @@ package uexchange
 
 import (
 	"errors"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 	"strings"
@@ -54,7 +54,7 @@ func (c *Client) sendGETRequest(requestURL string, params url.Values) ([]byte, e
 	}
 
 	// read response
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, errors.New("failed to read request response: " + err.Error())
 	}
@@ -91,7 +91,7 @@ func (c *Client) sendPOSTRequest(requestURL string, params url.Values) ([]byte, 
 	}
 
 	// read response
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, errors.New("failed to read request response: " + err.Error())
 	}
