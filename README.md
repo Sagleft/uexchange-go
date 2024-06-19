@@ -6,6 +6,15 @@ Library for working with the exchange UUSD and Crypton written in Golang
 [![GoDoc](https://godoc.org/github.com/sagleft/uexchange-go?status.svg)](https://godoc.org/gopkg.in/sagleft/uexchange-go.v1)
 [![go-report](https://goreportcard.com/badge/github.com/Sagleft/uexchange-go)](https://goreportcard.com/report/github.com/Sagleft/uexchange-go)
 
+## What do you get by using this library:
+* crypto currency converter api;
+* crypton crypto currency price api;
+* cryptocurrency trading api;
+* crypto exchange and wallet;
+* anonymous cryptocurrency exchange api.
+
+[CRP.is](https://crp.is/) - is the best anonymous bitcoin exchange, on the basis of which you can make your own bot using this library in the Golang language.
+
 ### :link: [Crypton Exchange API docs](https://crp.is/api-doc/)
 
 Install
